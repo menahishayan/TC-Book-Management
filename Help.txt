@@ -1,0 +1,24 @@
+To access Main Menu::Search and Main Menu::Document, all file
+streams must be loaded. If file error persists, ensure that all 3
+files are loaded and not damaged.
+
+WARNING: Modifying any file directly through Windows may result
+in file corruption.
+
+To exit any screen without an input prompt, press any key.
+To exit any screen with an input prompt, press the (ESC)
+key twice. Ignore error 41 or 42 (if encountered).
+To exit a menu, press any key not on the menu.
+
+Export function will create .CSV files that you must convert
+to .ACCDB for advanced database management tools
+
+For menus with MultiSelect function, you can select as many menu
+options as you like. This can be done by entering desired options
+seperated by a comma or space. The number of non-numeric characters
+(N > 1) you add between the selcted choices will not affect the
+result of the function.
+Press enter when you're done selecting your choices.
+
+
+For more information refer program documentation.
