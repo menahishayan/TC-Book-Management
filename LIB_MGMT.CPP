@@ -73,7 +73,7 @@ public:
 			else if(getcol=='f' | getcol=='F')
 			{
 				if(f_col<15)	f_col++;
-				else f_col=0;
+				else f_col=1;
 				if(col == f_col) f_col++;
 			}
 		}
