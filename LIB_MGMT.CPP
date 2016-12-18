@@ -1190,8 +1190,8 @@ reFee:		settextjustify(1,1);
 		tolower(feeChoice);
 		if(feeChoice == 'n')
 		{
-			outtextxy(midx, midy, "Manually Enter Damage Fee:");
-			gin(charges, midy, midx);
+			outtextxy(midx, midy-50, "Manually Enter Damage Fee:");
+			gin(charges, midy+50, midx);
 		}
 		else if(feeChoice != 'y')	goto reFee;
 		
@@ -1432,8 +1432,8 @@ void ListAllBooks()
 		elements++;
 	}
 	
-	dialog(180, 140, "Barcode", "_____________", elements-1, 250);
-	dialog(midx, 140, "Book Title", "_____________________", elements-1, 450);
+	dialog(180, 140, "Barcode", "_____________", elements, 250);
+	dialog(midx, 140, "Book Title", "_____________________", elements, 450);
 	
 	listBook.close();
 }
