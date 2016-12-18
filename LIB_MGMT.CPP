@@ -2357,7 +2357,7 @@ reTrEdit:				header("Borrow Book");
 						
 				while(!modTrans.eof())
 				{
-					pos = modTrans.tellg();
+					int pos2 = modTrans.tellg();
 					modTrans.read((char*) &trans, sizeof(trans));
 					if(modTrans.eof())	break;
 					
@@ -2432,7 +2432,7 @@ reTrEdit:				header("Borrow Book");
 						
 						findMem.close();
 						
-						modTrans.seekg(pos);
+						modTrans.seekg(pos2);
 						modTrans.write((char*) &trans, sizeof(trans));
 						break;
 					}
