@@ -1786,7 +1786,7 @@ l2:		case 9: header("(E)xtras\t(F)ile\t\t(S)earch\t(D)ocument", false, true);
 										
 										char uLib_Name2[8];
 										outtextxy(midx, midy+30, "Enter new name:         ");
-										gin(uLib_Name2, sizeof(uLib_Name2), false, midy, midx+80);
+										gin(uLib_Name2, sizeof(uLib_Name2), false, midy+30, midx+80);
 										
 										switch(menu2)
 										{
