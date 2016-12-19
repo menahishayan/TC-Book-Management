@@ -1,3 +1,10 @@
+/* Turbo C++(TM) Book Library Management System v1.09210
+ * Designed and developed by Menahi Shayan
+ * Source code released under GNU v3.0 Public License.
+ * MultiSelect(TM) and ERRNO2.H are subject to copyright.
+ * Copyright (C) 2016. Menahi Shayan. Some rights reserved.
+ */
+
 
 /*------------------------------------------------
  *  Header Files
