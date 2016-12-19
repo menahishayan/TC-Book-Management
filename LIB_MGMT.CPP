@@ -1,3 +1,8 @@
+
+/*------------------------------------------------
+ *  Header Files
+ *------------------------------------------------
+ */
 #include <iostream.h>
 #include <conio.h>
 #include <fstream.h>
@@ -12,18 +17,38 @@
 #include <dos.h>
 #include <process.h>
 
+
+/*------------------------------------------------
+ *  Constant Definitions
+ *------------------------------------------------
+ */
 #define true 1
 #define false 0
 
 #define VOID "\0"
 
+
+/*------------------------------------------------
+ *  Boolean Definition
+ *------------------------------------------------
+ */
 typedef int bool;
 
+
+/*------------------------------------------------
+ *  Global Declarations
+ *------------------------------------------------
+ */
 char bID[]="7783BN00", mID[]="7783MB00", tID[]="7783TR00";
 char bLib_Dir[50]="../bin/lib_mgmt/books/first.bin", mLib_Dir[50]="../bin/lib_mgmt/borrow/bor1.bin", tLib_Dir[50]="../bin/lib_mgmt/trans/tr01.bin";
 
-int midx, midy;
+int midx, midy;     // Center coordinates of output screen
 
+
+/*------------------------------------------------
+ *  Class For Color Management
+ *------------------------------------------------
+ */
 class colorScheme
 {
 	int f_col, col;
@@ -99,6 +124,11 @@ public:
 	}
 };
 
+
+/*------------------------------------------------
+ *  Function to Display Header
+ *------------------------------------------------
+ */
 void header(char text[], bool type = false, bool escReq = false)
 {
 	clrscr();
@@ -135,6 +165,11 @@ void header(char text[], bool type = false, bool escReq = false)
 	line(0, midy*2, midx*2, midy*2);
 }
 
+
+/*------------------------------------------------
+ *  Structure For Error Handling
+ *------------------------------------------------
+ */
 struct errorHandler
 {
 	int loopCounter;
@@ -228,8 +263,13 @@ struct errorHandler
 		errno = ENOFNSH;
 	}
 	
-}globalErrorHandler;
+}globalErrorHandler;        //Global Object For Error Handling
 
+
+/*------------------------------------------------
+ *  Functions For Graphics Input (Overloaded)
+ *------------------------------------------------
+ */
 void gin(char *str, unsigned len, bool onlyAlpha = false, int posy = 195, int posx = 130)
 {
 	int currentPos = posx;
@@ -391,6 +431,11 @@ void gin(float &final, int posy = 195, int posx = 130)
 	settextjustify(2,1);
 }
 
+
+/*------------------------------------------------
+ *  Function to Convert File Name to Directory (Overloaded)
+ *------------------------------------------------
+ */
 void makeDir(char Dir[], char name[], bool isCSV = false)
 {
 	char type = Dir[18];
@@ -429,6 +474,11 @@ void makeDir(char Dir[])
 	}
 }
 
+
+/*------------------------------------------------
+ *  Function to Extract File Name From Directory
+ *------------------------------------------------
+ */
 char* breakDir(char Dir[])
 {
 	char type = Dir[18];
@@ -463,6 +513,11 @@ char* breakDir(char Dir[])
 	return fname;
 }
 
+
+/*------------------------------------------------
+ *  Base Class For .CSV Exports
+ *------------------------------------------------
+ */
 class coreUtilities
 {
 protected:
@@ -498,6 +553,11 @@ protected:
 	}
 };
 
+
+/*------------------------------------------------
+ *  Class Definition For Book
+ *------------------------------------------------
+ */
 class Book : private coreUtilities
 {
 	char barcode[8], title[20], author[20], publisher[20];
@@ -532,10 +592,6 @@ public:
 		if(issued == copies)	return false;
 		else return true;
 	}
-
-//coreUtilities::getData;
-//coreUtilities::Display;
-//coreUtilities::univExport;
 
 	void getData()
 	{
@@ -655,6 +711,11 @@ public:
 	
 }b, book;
 
+
+/*------------------------------------------------
+ *  Structure Definition For Date
+ *------------------------------------------------
+ */
 struct Date	
 {
 	unsigned day, month, year;
@@ -691,7 +752,12 @@ struct Date
 			set(_t, padding);
 		}
 	}
-	
+    
+    
+    /*------------------------------------------------
+     *  Get System Date
+     *------------------------------------------------
+     */
 	void sysdate()
 	{
 		date sysdate;
@@ -748,6 +814,11 @@ struct Date
 	static bool isGreater(Date &, Date &);
 } today;
 
+
+/*------------------------------------------------
+ *  Compare Dates
+ *------------------------------------------------
+ */
 bool Date::isGreater(Date &d1, Date &d2)
 {
 	if(d1.year > d2.year)
@@ -771,6 +842,11 @@ bool Date::isGreater(Date &d1, Date &d2)
 	else return 0;
 }
 
+
+/*------------------------------------------------
+ *  Function For Auto-Sizing Dialog Box
+ *------------------------------------------------
+ */
 void dialog(int posx, int posy, char label[], char xlen_t[], int ylen, int padx=0)
 {
 	colorScheme dilCol;
@@ -788,6 +864,11 @@ void dialog(int posx, int posy, char label[], char xlen_t[], int ylen, int padx=
 	outtextxy((padx/8) + ((posx + (xlen*2) + 15)/2) - (textwidth(label)/2), posy, label);
 }
 
+
+/*------------------------------------------------
+ *  Class Definition For Borrower
+ *------------------------------------------------
+ */
 class Borrower : private coreUtilities
 {
 	char id[8];
@@ -976,6 +1057,11 @@ public:
 	
 }m, Borrower;
 
+
+/*------------------------------------------------
+ *  Class Definition For Issuing and Returning Books
+ *------------------------------------------------
+ */
 class transaction : private coreUtilities
 {
 	char ID[8], bID[9], mID[9];
@@ -1270,6 +1356,11 @@ reFee:		settextjustify(1,1);
 	}
 }t, trans;
 
+
+/*------------------------------------------------
+ *  Function to Increment IDs
+ *------------------------------------------------
+ */
 void _i(char ID[])
 {
 	if(ID[7]=='9')
@@ -1280,6 +1371,11 @@ void _i(char ID[])
 	else ID[7]++;
 }
 
+
+/*------------------------------------------------
+ *  The MultiSelect(TM) v1.2 Algorithm
+ *------------------------------------------------
+ */
 bool* multiSelect(int n)
 {
 	char *t_select = new char[3*n];
@@ -1308,6 +1404,11 @@ bool* multiSelect(int n)
 	return f_select;
 }
 
+
+/*------------------------------------------------
+ *  Function to List Menu Options
+ *------------------------------------------------
+ */
 void list(char text[])
 {
 	int items=0, j=0;
@@ -1332,6 +1433,11 @@ void list(char text[])
 	for(i=0; i<items; i++)	outtextxy(posx, posy+=25, label[i]);
 }
 
+
+/*------------------------------------------------
+ *  Function to Show All Loaded Files
+ *------------------------------------------------
+ */
 void showFiles()
 {
 	int padding[2] = {220,-100};
@@ -1352,6 +1458,11 @@ void showFiles()
 	settextstyle(3,0,1);
 }
 
+
+/*------------------------------------------------
+ *  Function to Check if Required Files Are Loaded
+ *------------------------------------------------
+ */
 bool getLoadStat()
 {
 	bool loadStat;
@@ -1370,6 +1481,11 @@ bool getLoadStat()
 	return loadStat;
 }
 
+
+/*------------------------------------------------
+ *  Functions to Globalize Auto-numbering Across Files
+ *------------------------------------------------
+ */
 void loadIndex()
 {
 	ifstream indexes("../bin/lib_mgmt/index.bin", ios::in);
@@ -1406,6 +1522,11 @@ void writeIndex()
 	indexes.close();
 }
 
+
+/*------------------------------------------------
+ *  Function to List All Books in The File
+ *------------------------------------------------
+ */
 void ListAllBooks()
 {
 	header("List All", false, true);
@@ -1439,6 +1560,11 @@ void ListAllBooks()
 	listBook.close();
 }
 
+
+/*------------------------------------------------
+ *  Function to List All Borrowers in The File
+ *------------------------------------------------
+ */
 void ListAllMem()
 {
 	header("List All", false, true);
@@ -1472,6 +1598,11 @@ void ListAllMem()
 	listMem.close();
 }
 
+
+/*------------------------------------------------
+ *  Function to List All Transactions in The File
+ *------------------------------------------------
+ */
 void ListAllTrans()
 {
 	header("List All", false, true);
@@ -1507,14 +1638,24 @@ void ListAllTrans()
 	listTrans.close();
 }
 
+
+/*------------------------------------------------
+ *  Main Function
+ *------------------------------------------------
+ */
 void main()
 {
 	char menu, i;
-	highvideo();
+	highvideo();        // Increase Intensity of Character Output
 	
 	loadIndex();
-	today.sysdate();
-
+	today.sysdate();    // Initialize System Date
+    
+    
+    /*------------------------------------------------
+     *  Initialize Graphics
+     *------------------------------------------------
+     */
 	int gdriver = DETECT, gmode, gerror;
 
 	initgraph(&gdriver, &gmode, "../BGI/");
@@ -1653,7 +1794,12 @@ l2:		case 9: header("(E)xtras\t(F)ile\t\t(S)earch\t(D)ocument", false, true);
 											break;
 							}
 							break;
-
+                        
+                        
+                        /*------------------------------------------------
+                         *  File Management Menu
+                         *------------------------------------------------
+                         */
 					case 'f': header("File", true, true);
 							list("(N)ew Library/(I)mport Library/(R)ename Library/(D)elete Library/(E)xport Database/");
 							showFiles();
@@ -1999,7 +2145,12 @@ l2:		case 9: header("(E)xtras\t(F)ile\t\t(S)earch\t(D)ocument", false, true);
 										getch();
 							}
 							break;
-
+                        
+                        
+                        /*------------------------------------------------
+                         *  Search Menu
+                         *------------------------------------------------
+                         */
 					case 's': header("Search", true, true);
 							list("(B) Book/(M) Borrower/(T) Transaction/");
 							menu = getch();
@@ -2104,7 +2255,12 @@ l2:		case 9: header("(E)xtras\t(F)ile\t\t(S)earch\t(D)ocument", false, true);
 							}
 							
 							break;
-
+                        
+                        
+                        /*------------------------------------------------
+                         *  Create/Update Menu
+                         *------------------------------------------------
+                         */
 					case 'd': header("Document", true, true);
 							list("(B) New Book/(U) Update Book/(M) New Borrower/(R) Update Borrower/");	
 							menu = getch();
@@ -2239,7 +2395,12 @@ l2:		case 9: header("(E)xtras\t(F)ile\t\t(S)earch\t(D)ocument", false, true);
 					case 27: goto l1;
 				}
 				goto l2;
-				
+            
+            
+            /*------------------------------------------------
+             *  Issue A Book
+             *------------------------------------------------
+             */
 		case 'b': header("Borrow Book");
 				
 				const char *const_tLib_Dir = tLib_Dir;
@@ -2362,7 +2523,12 @@ reTrEdit:				header("Borrow Book");
 				outtextxy(midx, midy, "Transaction complete.");
 
 				break;
-
+            
+            
+            /*------------------------------------------------
+             *  Return A Book
+             *------------------------------------------------
+             */
 		case 'r': header("Return Book");
 				outtextxy(midx, midy, "Enter Transaction ID:        ");
 				char tCheck[9];
@@ -2472,7 +2638,12 @@ reTrEdit:				header("Borrow Book");
 				}
 				
 				break;
-				
+            
+            
+            /*------------------------------------------------
+             *  List All Books/Borrowers/Transactions
+             *------------------------------------------------
+             */
 		case 'l':	ListAllBooks();
 				
 				settextstyle(3,0,1);
@@ -2507,7 +2678,12 @@ reTrEdit:				header("Borrow Book");
 				goto reCyc;
 				
 				break;
-
+            
+            
+            /*------------------------------------------------
+             *  Exit The Program
+             *------------------------------------------------
+             */
 		case 27:	clock_t start, end;
 				float elapsed;
 				start = clock();
