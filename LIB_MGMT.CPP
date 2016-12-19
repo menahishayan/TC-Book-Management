@@ -20,7 +20,7 @@
 typedef int bool;
 
 char bID[]="7783BN00", mID[]="7783MB00", tID[]="7783TR00";
-char bLib_Dir[50]="../bin/lib_mgmt/books/second.bin", mLib_Dir[50]="../bin/lib_mgmt/borrow/second.bin", tLib_Dir[50]="../bin/lib_mgmt/trans/third.bin";
+char bLib_Dir[50]="../bin/lib_mgmt/books/first.bin", mLib_Dir[50]="../bin/lib_mgmt/borrow/bor1.bin", tLib_Dir[50]="../bin/lib_mgmt/trans/tr01.bin";
 
 int midx, midy;
 
@@ -344,7 +344,7 @@ void gin(int &final, int posy = 195, int posx = 130)
 
 void gin(float &final, int posy = 195, int posx = 130)
 {
-	char str[8];
+	char str[10];
 	
 	int currentPos = posx;
 	
@@ -353,13 +353,13 @@ void gin(float &final, int posy = 195, int posx = 130)
 	
 	colorScheme input;
 	
-	for(int i=0; i<7; i++)
+	for(int i=0; i<9; i++)
 	{
 		back: str[i] = getch();
 		
 		if(str[i] != 13 && str[i] != 27)
 		{
-			if(!isdigit(str[i]) && str[i] != 8)
+			if(!isdigit(str[i]) && str[i] != 8 && str[i] != 46)
 			{
 				i--;
 				continue;
@@ -625,7 +625,7 @@ public:
 		sprintf(content[3], "Publisher: %s", publisher);
 		sprintf(content[4], "Total Stock: %d copies", copies);
 		sprintf(content[5], "Remaining Stock: %d copies", copies-issued);
-		sprintf(content[6], "Price: Rs.%f", price);
+		sprintf(content[6], "Price: Rs.%.2f", price);
 		
 		settextjustify(1,1);
 		outtextxy(midx, 180, content[0]);
@@ -1164,16 +1164,16 @@ public:
 			case 1: charges=0;
 					break;
 					
-			case 2: charges=getPrice()*0.3;
+			case 2: charges=getPrice()*0.05;
 					break;
 					
-			case 3: charges=getPrice()*0.5;
+			case 3: charges=getPrice()*0.1;
 					break;
 					
-			case 4: charges=getPrice()*0.8;
+			case 4: charges=getPrice()*0.15;
 					break;
 					
-			case 5: charges=getPrice();
+			case 5: charges=getPrice()*0.4;
 					break;
 		}
 		
@@ -1182,7 +1182,7 @@ reFee:		settextjustify(1,1);
 		
 		cout.setf(ios::fixed);
 		char setdam[100];
-		sprintf(setdam, "Apply Rs.%f damage fee? (Y/N)", charges);
+		sprintf(setdam, "Apply Rs.%.2f damage fee? (Y/N)", charges);
 		
 		outtextxy(midx, midy-90, setdam);
 
@@ -1191,10 +1191,11 @@ reFee:		settextjustify(1,1);
 		if(feeChoice == 'n')
 		{
 			outtextxy(midx, midy-50, "Manually Enter Damage Fee:");
-			gin(charges, midy+50, midx);
+			gin(charges, midy, midx);
 		}
 		else if(feeChoice != 'y')	goto reFee;
 		
+        settextjustify(1,1);
 		outtextxy(midx, midy+90, "Applied");
 		returnStatus = true;
 		getch();
@@ -1715,7 +1716,21 @@ l2:		case 9: header("(E)xtras\t(F)ile\t\t(S)earch\t(D)ocument", false, true);
 												goto l2;
 											}
 										}
-										else outtextxy(midx, midy+50, "Created.");
+										else
+                                        {
+                                            outtextxy(midx, midy+50, "Created.");
+                                            switch(menu2)
+                                            {
+                                                case 'b': makeDir(bLib_Dir, uLib_Name);
+                                                    break;
+                                                    
+                                                case 'm': makeDir(mLib_Dir, uLib_Name);
+                                                    break;
+                                                    
+                                                case 't': makeDir(tLib_Dir, uLib_Name);
+                                                    break;
+                                            }
+                                        }
 										getch();
 										
 										new_Lib.close();
@@ -1785,8 +1800,10 @@ l2:		case 9: header("(E)xtras\t(F)ile\t\t(S)earch\t(D)ocument", false, true);
 										gin(uLib_Name, sizeof(uLib_Name), false, midy, midx+80);
 										
 										char uLib_Name2[8];
+                                        settextjustify(1,1);
 										outtextxy(midx, midy+30, "Enter new name:         ");
 										gin(uLib_Name2, sizeof(uLib_Name2), false, midy+30, midx+80);
+                                        settextjustify(1,1);
 										
 										switch(menu2)
 										{
@@ -1859,16 +1876,19 @@ l2:		case 9: header("(E)xtras\t(F)ile\t\t(S)earch\t(D)ocument", false, true);
 										}
 										
 										outtextxy(midx, midy+50, "Confirm delete? (Y/N)");
-										char confirm;	confirm = getch();	tolower(confirm);
+                                        char confirm;	reDel2: confirm = getch();	tolower(confirm);
 										
 										if (confirm == 'n')	break;
-										
+                                        if (confirm != 'y') goto reDel2;
+                                    
+                                        outtextxy(midx+30, midy+50, "Yes");
 										outtextxy(midx, midy+80, "Reconfirm delete (Y/N)");
 								reDel:		confirm = getch();	tolower(confirm);
 										
 										if (confirm == 'y')
 										{
-											switch(menu2)
+											outtextxy(midx+30, midy+80, "Yes");
+                                            switch(menu2)
 											{
 												case 'b': const char *const_bLib_Dir2 = bLib_Dir2;
 														if(!remove(const_bLib_Dir2))
